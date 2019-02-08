@@ -1,58 +1,77 @@
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+
+void writeToFile(const char* nameOfFile = nullptr , int rangeMas = 100, int rangeRandomNumb = 1000)
+{
+    FILE* f;
+    if(nameOfFile == nullptr)
+    {
+        f = fopen("text.txt", "w");
+    }
+    else
+    {
+        f = fopen(nameOfFile, "w");
+    }
+    if(f == nullptr)
+    {
+        return;
+    }
+    int itemCount = rand()%rangeMas;
+    itemCount = (itemCount > 0 ? itemCount: (-1) * itemCount);
+    for(int i=0; i < itemCount; ++i)
+    {
+        fprintf(f, "%d, ", rand()%rangeRandomNumb);
+    }
+    fclose(f);
+}
+
+std::vector<int>* readFromFile(const char* nameOfFile, std::vector<int>* vec)
+{
+    if(nameOfFile == nullptr)
+    {
+        // throw
+        //return arr;
+    }
+    FILE* f;
+    if((f = fopen(nameOfFile, "rt")) == nullptr)
+    {
+        //throw;
+    }
+    //    unsigned int count = 0;
+    //    int c;
+    //    while ((c = fgetc(f)) != EOF)
+    //    {
+    //        if(char(c) == ',' || char(c) == ';' || char(c) == ' ')
+    //        {
+    //            ++count;
+    //        }
+    //    }
+    //    if(count == 0)
+    //    {
+    //        //throw
+    //    }
+    //    rewind(f);
+    //    int tmp = 0;
+    //    for(unsigned int i = 0; i < count; ++i)
+    //    {
+    //        fscanf(f, "%d, ", tmp);
+    //        vec->push_back(tmp);
+    //    }
+    int c;
+    while ((c = fgetc(f)) != EOF)
+    {
+        fscanf(f, "%d, ", c);
+        vec->push_back(c);
+    }
+    return vec;
+}
 
 
 //using namespace std;
 
 int main()
 {
-    FILE *f;
-    unsigned int numberItems = rand()%200;
-    if((f = fopen("text.txt", "w")) != nullptr)
-    {
-        for(unsigned int i=0; i<numberItems; ++i)
-        {
-            fprintf(f, "%d, ", rand()%1000);
-        }
-        fclose(f);
-    }
-    else
-    {
-        std::cout << "cant open file!" <<std::endl;
-        return 1;
-    }
-    unsigned int count = 0;
-    char c;
-    if((f = fopen("text.txt", "rt")) != nullptr)
-    {
-        while((c = fgetc(f)) != EOF)
-        {
-            if(c == ',')
-            {
-                count++;
-            }
-        }
-        if(count == 0)
-        {
-            std::cout << "no numbers in file!" << std::endl;
-        }
-        fclose(f);
-    }
-    if((f = fopen("text.txt", "rt")) != nullptr)
-    {
-        int arr[count];
-        for(unsigned int i = 0; i < count; ++i)
-        {
-            fscanf(f, "%d, ", &arr[i]);
-            std::cout << arr[i] << std::endl;
-        }
-        system("pause");
-    }
-    else
-    {
-        std::cout << "cant open file!" <<std::endl;
-        return 1;
-    }
- //   cout << "Hello World!" << endl;
+
     return 0;
 }
